@@ -1,0 +1,52 @@
+/* src/pages/ProductList/ProductList.css */
+.product-list-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filter-container input[type="text"] {
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 250px;
+    text-align: center;
+}
+
+.price-filter {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.price-filter input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.price-filter label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.product-list p {
+    font-size: 1.2rem;
+    color: #555;
+}

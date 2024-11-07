@@ -1,0 +1,55 @@
+/* src/pages/Home/Home.css */
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* Espaço entre os contêineres */
+    padding: 20px 0; /* Espaço ao redor do conteúdo */
+    background-color: #f5f0e6; /* Fundo da página em tom bege claro */
+}
+
+.home-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    width: 90%; /* Ligeiramente menor para dar espaço ao redor */
+    color: #4a2e2b; /* Texto em marrom escuro para melhor contraste */
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-section:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+}
+
+.home-section h2 {
+    color: #ffffff;
+    text-shadow: 0 6px 12px rgba(0, 0, 0, 0.6);
+    padding: 20px 40px;
+    border-radius: 8px;
+}
+
+/* Imagens de fundo e bordas suaves para cada seção */
+.camisas {
+    background-image: url('../../assets/camisas.jpg');
+    border: 3px solid #d9b8a0; /* Borda marrom claro */
+}
+
+.calcas {
+    background-image: url('../../assets/calcas.jpeg');
+    border: 3px solid #c4a289; /* Borda mais suave */
+}
+
+.ongs {
+    background-image: url('../../assets/ong.jpg');
+    border: 3px solid #a47b64; /* Borda em marrom mais profundo */
+}

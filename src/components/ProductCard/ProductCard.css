@@ -1,0 +1,31 @@
+/* src/components/ProductCard/ProductCard.css */
+.product-card {
+    width: 200px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-card img {
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+}
+
+.product-info {
+    padding: 10px;
+    text-align: center;
+}
+
+.product-info h3 {
+    font-size: 1.2rem;
+}
+
+.product-info p {
+    font-size: 1rem;
+}

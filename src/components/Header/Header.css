@@ -1,0 +1,11 @@
+.header {
+    display: grid;
+    place-items: center;
+    height: 175px;
+    background-color: #cbae99;
+  }
+  
+  .header .logo {
+    width: 10vw; /* Ensure the logo doesn't exceed the container width */
+    height: auto; /* Maintain aspect ratio */
+  }
