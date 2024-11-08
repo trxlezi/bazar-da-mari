@@ -1,20 +1,23 @@
 /* src/components/ProductCard/ProductCard.css */
 .product-card {
     width: 200px;
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
+    height: 300px;
+    background-color: white;
     border-radius: 10px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    border: 1px solid transparent;
+    overflow: hidden;
 }
 
 .product-card:hover {
     transform: scale(1.05);
+    border: 1px solid #ddd;
 }
 
 .product-card img {
-    width: 100%;
-    border-radius: 10px 10px 0 0;
+    width: 200px;
+    height: 200px;
 }
 
 .product-info {

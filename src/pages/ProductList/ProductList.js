@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductList.css';
 import ProductCard from '../../components/ProductCard/ProductCard';
+import camisaPolo from '../../assets/camisa_polo.jpg';
 
 function ProductList() {
     const { category } = useParams();
@@ -16,7 +17,7 @@ function ProductList() {
             price: 50, 
             category: 'camisas', 
             description: 'Camisa confortável e estilosa',
-            image: 'camisa_polo.jpg' // Imagem específica para este produto
+            image: camisaPolo // Imagem específica para este produto
         },
         { 
             id: 2, 
@@ -42,6 +43,16 @@ function ProductList() {
             description: 'Blusa quente para inverno',
             image: 'blusa_de_frio.jpg' // Imagem específica para este produto
         },
+        { 
+            id: 5, 
+            name: 'Sueter', 
+            price: 120, 
+            category: 'camisas', 
+            description: 'Sueter de lã',
+            image: 'blusa_de_frio.jpg' // Imagem específica para este produto
+        },
+        
+        
     ];
     
 

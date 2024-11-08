@@ -13,7 +13,7 @@ function ProductCard({ product }) {
     return (
         <div className="product-card" onClick={goToProductDetails}>
             {/* Usando a chave 'image' para exibir a imagem do produto */}
-            <img src={`../../assets/${product.image}`} alt={product.name} />
+            <img src={`${product.image}`} alt={product.name} />
             <div className="product-info">
                 <h3>{product.name}</h3>
                 <p>{`R$ ${product.price}`}</p>
