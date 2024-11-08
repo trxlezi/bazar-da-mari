@@ -1,30 +1,47 @@
-// src/pages/ProductDetails/ProductDetails.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './ProductDetails.css';
 
-function ProductDetails() {
-    const { id } = useParams();  // Obtendo o id do produto da URL
+function ProductDetails({ setCart }) {
+    const { id } = useParams();  // Obtém o id do produto da URL
+    const [product, setProduct] = useState(null);
 
-    // Simulação de dados de produtos (substitua com dados reais de uma API ou banco de dados)
-    const product = {
-        1: { name: 'Camisa Polo', price: 50, description: 'Camisa confortável e estilosa' },
-        2: { name: 'Calça Jeans', price: 80, description: 'Calça de alta qualidade' },
-        3: { name: 'Camiseta Básica', price: 30, description: 'Camiseta simples e elegante' },
-    };
+    useEffect(() => {
+        const products = [
+            { id: 1, name: 'Camisa Polo', price: 50, description: 'Camisa confortável e estilosa' },
+            { id: 2, name: 'Calça Jeans', price: 100, description: 'Calça jeans de corte reto' },
+            { id: 3, name: 'Tênis Casual', price: 150, description: 'Tênis para uso diário' },
+        ];
 
-    const selectedProduct = product[id];
+        const productFound = products.find(product => product.id === parseInt(id));
+        setProduct(productFound);
+    }, [id]);
 
-    if (!selectedProduct) {
-        return <div>Produto não encontrado.</div>;
+    if (!product) {
+        return <p>Produto não encontrado.</p>;
     }
+
+    const handleAddToCart = () => {
+        setCart(prevCart => {
+            const existingProduct = prevCart.find(item => item.id === product.id);
+            if (existingProduct) {
+                return prevCart.map(item =>
+                    item.id === product.id
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
+            } else {
+                return [...prevCart, { ...product, quantity: 1 }];
+            }
+        });
+    };
 
     return (
         <div className="product-details">
-            <h2>{selectedProduct.name}</h2>
-            <p>{selectedProduct.description}</p>
-            <p>{`Preço: R$ ${selectedProduct.price}`}</p>
-            <button>Adicionar ao Carrinho</button>
+            <h1>{product.name}</h1>
+            <p>{product.description}</p>
+            <p>Preço: R$ {product.price}</p>
+            <button onClick={handleAddToCart}>Adicionar ao Carrinho</button>
         </div>
     );
 }
