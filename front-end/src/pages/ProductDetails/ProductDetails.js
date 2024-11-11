@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import './ProductDetails.css';
 
-function ProductDetails({ setCart }) {
+function ProductDetails({ cart, setCart }) {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
 
@@ -14,7 +14,18 @@ function ProductDetails({ setCart }) {
     }, [id]);
 
     const addToCart = () => {
-        setCart(prevCart => [...prevCart, product]);
+        setCart(prevCart => {
+            const existingItem = prevCart.find(item => item.id === product.id);
+            if (existingItem) {
+                // Se o produto já estiver no carrinho, incrementa a quantidade
+                return prevCart.map(item =>
+                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                );
+            } else {
+                // Se o produto não estiver no carrinho, adiciona com quantity = 1
+                return [...prevCart, { ...product, quantity: 1 }];
+            }
+        });
     };
 
     return (
