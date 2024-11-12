@@ -5,10 +5,10 @@ function Cart({ cart, setCart }) {
     const removeFromCart = (productId) => {
         setCart(prevCart =>
             prevCart
-                .map(item => 
+                .map(item =>
                     item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
                 )
-                .filter(item => item.quantity > 0) // Remove item se a quantidade for 0
+                .filter(item => item.quantity > 0) // Remove o item do carrinho se a quantidade for 0
         );
     };
 

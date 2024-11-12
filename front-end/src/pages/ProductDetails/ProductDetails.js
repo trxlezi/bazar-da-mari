@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';  // Importa o toast
 import './ProductDetails.css';
 
-function ProductDetails({ cart, setCart }) {
+function ProductDetail({ setCart }) {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
 
@@ -15,32 +16,49 @@ function ProductDetails({ cart, setCart }) {
 
     const addToCart = () => {
         setCart(prevCart => {
-            const existingItem = prevCart.find(item => item.id === product.id);
-            if (existingItem) {
+            const existingProduct = prevCart.find(item => item.id === product.id);
+            if (existingProduct) {
                 // Se o produto já estiver no carrinho, incrementa a quantidade
                 return prevCart.map(item =>
-                    item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    item.id === product.id
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
                 );
             } else {
-                // Se o produto não estiver no carrinho, adiciona com quantity = 1
+                // Se o produto não estiver no carrinho, adiciona como novo item com quantity 1
                 return [...prevCart, { ...product, quantity: 1 }];
             }
         });
+
+        // Exibe o Toast de sucesso
+        toast.success("Produto adicionado ao carrinho!", {
+            position: "bottom-right",  // Posição do Toast
+            autoClose: 3000,           // Tempo de fechamento do Toast
+        });
     };
 
+    if (!product) {
+        return <div>Carregando...</div>;
+    }
+
     return (
-        <div className="product-details">
-            {product ? (
-                <>
-                    <h2>{product.name}</h2>
-                    <p>Preço: R$ {product.price.toFixed(2)}</p>
-                    <button onClick={addToCart}>Adicionar ao carrinho</button>
-                </>
-            ) : (
-                <p>Carregando produto...</p>
-            )}
+        <div className="product-detail">
+            <img
+                src={`http://localhost:5000${product.image}`}
+                alt={product.name}
+                className="product-detail-image"
+            />
+            <div className="product-detail-info">
+                <h1>{product.name}</h1>
+                <p className="product-detail-price">R$ {product.price}</p>
+                <p className="product-detail-description">{product.description}</p>
+                <div className="action-buttons">
+                    <button onClick={addToCart} className="add-to-cart-button">Adicionar ao Carrinho</button>
+                    <button className="buy-now-button">Comprar Agora</button>
+                </div>
+            </div>
         </div>
     );
 }
 
-export default ProductDetails;
+export default ProductDetail;

@@ -1,22 +1,22 @@
-// src/components/ProductCard/ProductCard.js
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Importa o Link do React Router
 import './ProductCard.css';
 
 function ProductCard({ product }) {
-    const navigate = useNavigate();
-
-    const goToProductDetails = () => {
-        navigate(`/produto/${product.id}`);
-    };
-
     return (
-        <div className="product-card" onClick={goToProductDetails}>
-            <img src={`${product.image}`} alt={product.name} />
-            <div className="product-info">
-                <h3>{product.name}</h3>
-                <p>{`R$ ${product.price}`}</p>
-            </div>
+        <div className="product-card">
+            <Link to={`/produto/${product.id}`} className="product-link">
+                <img
+                    src={`http://localhost:5000${product.image}`}
+                    alt={product.name}
+                    className="product-image"
+                />
+                <div className="product-info">
+                    <h2>{product.name}</h2>
+                    <p className="product-price">R$ {product.price}</p>
+                    <p className="product-category">{product.category}</p>
+                </div>
+            </Link>
         </div>
     );
 }

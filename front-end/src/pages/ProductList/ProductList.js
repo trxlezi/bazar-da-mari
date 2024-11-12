@@ -15,7 +15,8 @@ function ProductList() {
     }, [category]);
 
     return (
-        <div>
+        <div className="product-list-container">
+            <h1 className="category-title">{category}</h1>
             <div className="product-grid">
                 {products.map(product => (
                     <ProductCard key={product.id} product={product} />
