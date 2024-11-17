@@ -13,16 +13,16 @@ function Home() {
     return (
         <main className="home-container">
             <section
-                className="home-section camisas"
-                onClick={() => navigateTo('camisas')}
+                className="home-section superiores"
+                onClick={() => navigateTo('superiores')}
             >
-                <h2>Camisas</h2>
+                <h2>Superiores</h2>
             </section>
             <section
-                className="home-section calcas"
-                onClick={() => navigateTo('calcas')}
+                className="home-section inferiores"
+                onClick={() => navigateTo('inferiores')}
             >
-                <h2>Calças</h2>
+                <h2>Inferiores</h2>
             </section>
             <section
                 className="home-section ongs"

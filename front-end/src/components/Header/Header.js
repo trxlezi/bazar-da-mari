@@ -13,8 +13,8 @@ function Header() {
             </div>
             <nav className="nav-links">
                 {/* Corrigir os links para corresponder às rotas configuradas */}
-                <Link to="/produtos/camisas">Camisas</Link>
-                <Link to="/produtos/calcas">Calças</Link>
+                <Link to="/produtos/superiores">Superiores</Link>
+                <Link to="/produtos/inferiores">Inferiores</Link>
                 <Link to="/produtos/ongs">Produtos para ONGs</Link>
                 <Link to="/carrinho">Carrinho</Link>
             </nav>
