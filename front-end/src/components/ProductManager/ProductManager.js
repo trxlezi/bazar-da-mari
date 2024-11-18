@@ -91,40 +91,43 @@ function ProductManager() {
         <div className="product-manager">
             <h1>Gerenciar Produtos</h1>
             <form onSubmit={handleSubmit} className="product-form">
-                <input 
-                    type="text" 
-                    placeholder="Nome" 
-                    value={form.name} 
-                    onChange={e => setForm({ ...form, name: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="number" 
-                    placeholder="Preço" 
-                    value={form.price} 
-                    onChange={e => setForm({ ...form, price: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="text" 
-                    placeholder="Categoria" 
-                    value={form.category} 
-                    onChange={e => setForm({ ...form, category: e.target.value })} 
-                    required 
-                />
-                <textarea 
-                    placeholder="Descrição" 
-                    value={form.description} 
-                    onChange={e => setForm({ ...form, description: e.target.value })} 
-                    required 
-                />
-                <input 
-                    type="file" 
-                    onChange={e => setForm({ ...form, image: e.target.files[0] })} 
-                />
-                <button type="submit">{editMode ? 'Atualizar Produto' : 'Adicionar Produto'}</button>
-                {editMode && <button type="button" onClick={handleCancelEdit}>Cancelar</button>}
-            </form>
+    <input 
+        type="text" 
+        placeholder="Nome" 
+        value={form.name} 
+        onChange={e => setForm({ ...form, name: e.target.value })} 
+        required 
+    />
+    <input 
+        type="number" 
+        placeholder="Preço" 
+        value={form.price} 
+        onChange={e => setForm({ ...form, price: e.target.value })} 
+        required 
+    />
+    <select 
+        value={form.category} 
+        onChange={e => setForm({ ...form, category: e.target.value })} 
+        required
+    >
+        <option value="" disabled></option>
+        <option value="superiores">Superiores</option>
+        <option value="inferiores">Inferiores</option>
+        <option value="ongs">ONGs</option>
+    </select>
+    <textarea 
+        placeholder="Descrição" 
+        value={form.description} 
+        onChange={e => setForm({ ...form, description: e.target.value })} 
+        required 
+    />
+    <input 
+        type="file" 
+        onChange={e => setForm({ ...form, image: e.target.files[0] })} 
+    />
+    <button type="submit">{editMode ? 'Atualizar Produto' : 'Adicionar Produto'}</button>
+    {editMode && <button type="button" onClick={handleCancelEdit}>Cancelar</button>}
+</form>
 
             <h2>Lista de Produtos</h2>
             <ul className="product-list">
