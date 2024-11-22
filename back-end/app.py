@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 import sqlite3
 import os
@@ -11,6 +11,7 @@ CORS(app)
 UPLOAD_FOLDER = 'static/uploads'  # Pasta onde as imagens serão armazenadas
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = os.urandom(24)  # Chave secreta para sessões
 
 # Função para verificar a extensão do arquivo
 def allowed_file(filename):
@@ -55,6 +56,30 @@ def create_table():
 # Chame a função para criar a tabela ao iniciar o aplicativo
 create_table()
 
+# Usuário pré-registrado
+USUARIO = {'username': 'admin', 'password': 'adminpassword'}
+
+# Rota de login
+@app.route('/api/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+
+    if username == USUARIO['username'] and password == USUARIO['password']:
+        # Armazenando a autenticação na sessão
+        session['logged_in'] = True
+        return jsonify({'message': 'Login bem-sucedido'}), 200
+    else:
+        return jsonify({'error': 'Credenciais inválidas'}), 401
+
+# Rota para verificar se o usuário está logado
+@app.route('/api/protected', methods=['GET'])
+def protected():
+    if 'logged_in' not in session or not session['logged_in']:
+        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
+    return jsonify({'message': 'Bem-vindo, você está autenticado!'})
+
 # Rota para obter todos os produtos ou por categoria
 @app.route('/api/produtos', methods=['GET'])
 def get_products():
@@ -85,10 +110,12 @@ def get_product(product_id):
     else:
         return jsonify({"error": "Produto não encontrado"}), 404  # Caso o produto não exista
 
-
 # Rota para adicionar um novo produto
 @app.route('/api/produto', methods=['POST'])
 def create_product():
+    if 'logged_in' not in session or not session['logged_in']:
+        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
+
     data = request.form
     image_file = request.files.get('image')
 
@@ -115,6 +142,9 @@ def create_product():
 # Rota para atualizar um produto existente
 @app.route('/api/produto/<int:product_id>', methods=['PUT'])
 def update_product(product_id):
+    if 'logged_in' not in session or not session['logged_in']:
+        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
+
     data = request.form
     image_file = request.files.get('image')
     
@@ -138,6 +168,9 @@ def update_product(product_id):
 # Rota para excluir um produto
 @app.route('/api/produto/<int:product_id>', methods=['DELETE'])
 def delete_product(product_id):
+    if 'logged_in' not in session or not session['logged_in']:
+        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
+
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM products WHERE id = ?", (product_id,))
