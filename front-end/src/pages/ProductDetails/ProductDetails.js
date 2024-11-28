@@ -54,7 +54,6 @@ function ProductDetail({ setCart }) {
                 <p className="product-detail-description">{product.description}</p>
                 <div className="action-buttons">
                     <button onClick={addToCart} className="add-to-cart-button">Adicionar ao Carrinho</button>
-                    <button className="buy-now-button">Comprar Agora</button>
                 </div>
             </div>
         </div>

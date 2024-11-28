@@ -2,14 +2,14 @@
 .header {
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribui o logo e a navegação */
-  align-items: center; /* Alinha o conteúdo verticalmente */
-  padding: 10px 20px; /* Adiciona espaçamento dentro do header */
-  background-color: #cbae99; /* Cor de fundo do header */
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #cbae99;
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  z-index: 10; /* Garante que o header esteja acima de outros elementos */
+  z-index: 10;
 }
 
 /* Logo */
@@ -20,9 +20,9 @@
 }
 
 .logo {
-  width: 120px;  /* Ajuste o tamanho do logo */
-  height: auto;  /* Mantém a proporção */
-  cursor: pointer;  /* Indica que o logo é clicável */
+  width: 120px;
+  height: auto;
+  cursor: pointer;
 }
 
 /* Navegação - Links */
@@ -35,37 +35,38 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #5c4a44; /* Cor dos links */
+  color: #5c4a44;
   font-size: 1rem;
   font-weight: 500;
-  transition: color 0.3s ease; /* Transição suave para cor */
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: #8c6f58; /* Cor do link ao passar o mouse */
+  color: #8c6f58;
 }
 
 /* Responsividade: Ajustar para telas menores */
 @media (max-width: 768px) {
   .nav-links {
-    gap: 10px; /* Diminui o espaçamento entre os links */
+    gap: 10px;
   }
 
   .logo {
-    width: 100px; /* Reduz o tamanho do logo em telas menores */
+    width: 100px;
   }
 
   .header {
-    flex-direction: column; /* Coloca o logo e os links em coluna em telas menores */
+    flex-direction: column;
     text-align: center;
   }
 
   .nav-links {
-    flex-direction: column; /* Organiza os links em coluna */
+    flex-direction: column;
     margin-top: 10px;
   }
 
   .nav-links a {
-    font-size: 1.2rem; /* Aumenta o tamanho da fonte em dispositivos móveis */
+    font-size: 1.2rem;
   }
 }
+

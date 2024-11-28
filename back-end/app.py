@@ -1,17 +1,20 @@
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import sqlite3
 import os
 from werkzeug.utils import secure_filename
+import jwt
+import datetime
+from functools import wraps
 
 app = Flask(__name__)
 CORS(app)
 
 # Configurações para upload de arquivos
-UPLOAD_FOLDER = 'static/uploads'  # Pasta onde as imagens serão armazenadas
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.secret_key = os.urandom(24)  # Chave secreta para sessões
+app.config['SECRET_KEY'] = os.urandom(24)  # Chave secreta para JWT
 
 # Função para verificar a extensão do arquivo
 def allowed_file(filename):
@@ -59,7 +62,6 @@ create_table()
 # Usuário pré-registrado
 USUARIO = {'username': 'admin', 'password': 'adminpassword'}
 
-# Rota de login
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -67,17 +69,36 @@ def login():
     password = data.get('password')
 
     if username == USUARIO['username'] and password == USUARIO['password']:
-        # Armazenando a autenticação na sessão
-        session['logged_in'] = True
-        return jsonify({'message': 'Login bem-sucedido'}), 200
+        token = jwt.encode({
+            'user': username,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+        }, app.config['SECRET_KEY'], algorithm='HS256')
+
+        return jsonify({'access_token': token}), 200
     else:
         return jsonify({'error': 'Credenciais inválidas'}), 401
+    
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.headers.get('Authorization')
 
-# Rota para verificar se o usuário está logado
+        if not token:
+            return jsonify({'error': 'Token ausente!'}), 401
+
+        try:
+            data = jwt.decode(token.split()[1], app.config['SECRET_KEY'], algorithms=['HS256'])
+        except:
+            return jsonify({'error': 'Token inválido!'}), 401
+
+        return f(*args, **kwargs)
+
+    return decorated
+
+
 @app.route('/api/protected', methods=['GET'])
+@token_required
 def protected():
-    if 'logged_in' not in session or not session['logged_in']:
-        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
     return jsonify({'message': 'Bem-vindo, você está autenticado!'})
 
 # Rota para obter todos os produtos ou por categoria
@@ -112,10 +133,8 @@ def get_product(product_id):
 
 # Rota para adicionar um novo produto
 @app.route('/api/produto', methods=['POST'])
+@token_required
 def create_product():
-    if 'logged_in' not in session or not session['logged_in']:
-        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
-
     data = request.form
     image_file = request.files.get('image')
 
@@ -139,12 +158,9 @@ def create_product():
     else:
         return jsonify({"error": "Arquivo de imagem inválido"}), 400
 
-# Rota para atualizar um produto existente
 @app.route('/api/produto/<int:product_id>', methods=['PUT'])
+@token_required
 def update_product(product_id):
-    if 'logged_in' not in session or not session['logged_in']:
-        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
-
     data = request.form
     image_file = request.files.get('image')
     
@@ -165,12 +181,9 @@ def update_product(product_id):
     conn.close()
     return jsonify({"message": "Produto atualizado com sucesso"})
 
-# Rota para excluir um produto
 @app.route('/api/produto/<int:product_id>', methods=['DELETE'])
+@token_required
 def delete_product(product_id):
-    if 'logged_in' not in session or not session['logged_in']:
-        return jsonify({'error': 'Acesso negado. Usuário não autenticado'}), 401
-
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM products WHERE id = ?", (product_id,))

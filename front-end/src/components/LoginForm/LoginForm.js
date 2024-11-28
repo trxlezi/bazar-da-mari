@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './LoginForm.css';  // Certifique-se de importar o arquivo CSS
+import './LoginForm.css';
 
 function LoginForm({ setIsLoggedIn }) {
     const [username, setUsername] = useState('');
@@ -12,16 +12,28 @@ function LoginForm({ setIsLoggedIn }) {
 
         try {
             const response = await axios.post('http://localhost:5000/api/login', { username, password });
-            const { access_token } = response.data;
+            console.log('Full response:', response);
+            console.log('Full response data:', response.data);
 
-            // Salva o token no localStorage
-            localStorage.setItem('token', access_token);
+            if (response.data && response.data.access_token) {
+                const { access_token } = response.data;
+                console.log('Received token:', access_token);
 
-            // Atualiza o estado de login diretamente
-            setIsLoggedIn(true);
+                // Salva o token no localStorage
+                localStorage.setItem('token', access_token);
 
+                console.log('Stored token:', localStorage.getItem('token'));
+
+                // Atualiza o estado de login
+                setIsLoggedIn(true);
+            } else {
+                console.error('No access_token in response:', response.data);
+                setError('Erro no formato da resposta do servidor.');
+            }
         } catch (error) {
-            setError('Credenciais inválidas');
+            console.error('Login error:', error);
+            console.error('Error response:', error.response);
+            setError('Credenciais inválidas ou erro no servidor');
         }
     };
 
@@ -52,3 +64,4 @@ function LoginForm({ setIsLoggedIn }) {
 }
 
 export default LoginForm;
+

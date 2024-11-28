@@ -1,5 +1,7 @@
 import React from 'react';
 import './Cart.css';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Cart({ cart, setCart }) {
     const removeFromCart = (productId) => {
@@ -13,6 +15,14 @@ function Cart({ cart, setCart }) {
     };
 
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+    const handleCheckout = () => {
+        // Exibe o toast de compra confirmada
+        toast.success("Compra confirmada!", {
+            position: 'top-center',  // Usando string diretamente
+            autoClose: 3000,
+        });
+    };
 
     return (
         <div className="cart-container">
@@ -33,6 +43,13 @@ function Cart({ cart, setCart }) {
                     </li>
                 ))}
             </ul>
+
+            <button className="checkout-button" onClick={handleCheckout}>
+                Comprar Agora
+            </button>
+
+            {/* Componente ToastContainer para renderizar o toast */}
+            <ToastContainer />
         </div>
     );
 }

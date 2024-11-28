@@ -1,87 +1,55 @@
-/* Estilos gerais para o formulário de login */
 .login-form {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 74vh;
-    background-color: #cbae99; /* Cor de fundo combinando com o header */
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-/* Estilizando o contêiner do formulário */
-.form-container {
-    background-color: #fff; /* Fundo branco para contraste */
+    align-items: center;
+    height: calc(100vh - 200px);
+    background-color: #f5e6d3;
+  }
+  
+  .form-container {
+    background-color: #ffffff;
     padding: 30px;
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    box-sizing: border-box;
-}
-
-/* Estilos para os campos de entrada */
-.input-field {
-    width: 92%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #8c6f58; /* Mesma cor usada nos links do header */
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #cbae99;
     border-radius: 4px;
     font-size: 16px;
-    font-family: Arial, sans-serif; /* Fonte consistente com o header */
-    color: #5c4a44; /* Cor do texto dos links */
-    background-color: #f9f4ef; /* Fundo suave */
-}
-
-.input-field:focus {
-    outline: none;
-    border-color: #8c6f58; /* Destaque ao focar */
-}
-
-/* Estilo para o botão de submit */
-.submit-btn {
+  }
+  
+  .submit-btn {
     width: 100%;
-    padding: 12px;
-    background-color: #8c6f58; /* Cor consistente com os links */
+    padding: 10px;
+    background-color: #8c6f58;
     color: white;
-    font-size: 16px;
-    font-weight: 500;
     border: none;
     border-radius: 4px;
+    font-size: 16px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    font-family: Arial, sans-serif; /* Fonte consistente */
-}
-
-.submit-btn:hover {
-    background-color: #5c4a44; /* Cor de hover consistente */
-}
-
-/* Estilo para a mensagem de erro */
-.error-message {
+  }
+  
+  .submit-btn:hover {
+    background-color: #5c4a44;
+  }
+  
+  .error-message {
     color: #d9534f;
-    font-size: 14px;
     margin-top: 10px;
     text-align: center;
-}
-
-/* Adicionando espaçamento entre os elementos do formulário */
-form > *:not(.error-message) {
-    margin-bottom: 15px;
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 768px) {
+  }
+  
+  @media (max-width: 768px) {
     .form-container {
-        padding: 20px;
+      padding: 20px;
     }
-
-    .submit-btn {
-        font-size: 18px;
-    }
-
-    .input-field {
-        font-size: 14px;
-    }
-}
+  }
+  
+  
