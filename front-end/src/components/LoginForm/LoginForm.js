@@ -19,12 +19,10 @@ function LoginForm({ setIsLoggedIn }) {
                 const { access_token } = response.data;
                 console.log('Received token:', access_token);
 
-                // Salva o token no localStorage
                 localStorage.setItem('token', access_token);
 
                 console.log('Stored token:', localStorage.getItem('token'));
 
-                // Atualiza o estado de login
                 setIsLoggedIn(true);
             } else {
                 console.error('No access_token in response:', response.data);

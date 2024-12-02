@@ -1,11 +1,10 @@
-/* src/pages/Home/Home.css */
 .home-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px; /* Espaço entre os contêineres */
-    padding: 20px 0; /* Espaço ao redor do conteúdo */
-    background-color: #f5f0e6; /* Fundo da página em tom bege claro */
+    gap: 20px;
+    padding: 20px 0;
+    background-color: #f5f0e6;
 }
 
 .home-section {
@@ -13,8 +12,8 @@
     justify-content: center;
     align-items: center;
     height: 70vh;
-    width: 90%; /* Ligeiramente menor para dar espaço ao redor */
-    color: #4a2e2b; /* Texto em marrom escuro para melhor contraste */
+    width: 90%;
+    color: #4a2e2b;
     font-size: 2.5rem;
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
@@ -38,18 +37,17 @@
     border-radius: 8px;
 }
 
-/* Imagens de fundo e bordas suaves para cada seção */
 .superiores {
     background-image: url('../../assets/superiores.jpg');
-    border: 3px solid #d9b8a0; /* Borda marrom claro */
+    border: 3px solid #d9b8a0;
 }
 
 .inferiores {
     background-image: url('../../assets/inferiores.webp');
-    border: 3px solid #c4a289; /* Borda mais suave */
+    border: 3px solid #c4a289;
 }
 
 .ongs {
     background-image: url('../../assets/ong.jpg');
-    border: 3px solid #a47b64; /* Borda em marrom mais profundo */
+    border: 3px solid #a47b64;
 }

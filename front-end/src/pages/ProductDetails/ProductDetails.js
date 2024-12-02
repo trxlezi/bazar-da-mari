@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { toast } from 'react-toastify';  // Importa o toast
+import { toast } from 'react-toastify';
 import './ProductDetails.css';
 
 function ProductDetail({ setCart }) {
@@ -18,22 +18,19 @@ function ProductDetail({ setCart }) {
         setCart(prevCart => {
             const existingProduct = prevCart.find(item => item.id === product.id);
             if (existingProduct) {
-                // Se o produto já estiver no carrinho, incrementa a quantidade
                 return prevCart.map(item =>
                     item.id === product.id
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             } else {
-                // Se o produto não estiver no carrinho, adiciona como novo item com quantity 1
                 return [...prevCart, { ...product, quantity: 1 }];
             }
         });
 
-        // Exibe o Toast de sucesso
         toast.success("Produto adicionado ao carrinho!", {
-            position: "bottom-right",  // Posição do Toast
-            autoClose: 3000,           // Tempo de fechamento do Toast
+            position: "bottom-right", 
+            autoClose: 3000,
         });
     };
 

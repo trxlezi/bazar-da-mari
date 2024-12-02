@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import LoginForm from '../../components/LoginForm/LoginForm';  // Caminho correto
-import ProductManager from '../../components/ProductManager/ProductManager';  // Certifique-se de importar o ProductManager
+import LoginForm from '../../components/LoginForm/LoginForm';
+import ProductManager from '../../components/ProductManager/ProductManager';
 
 const ProductAdmin = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -8,9 +8,9 @@ const ProductAdmin = () => {
     return (
         <div>
             {isLoggedIn ? (
-                <ProductManager />  // Mostrar o gerenciador de produtos se estiver logado
+                <ProductManager />
             ) : (
-                <LoginForm setIsLoggedIn={setIsLoggedIn} />  // Passando a função como prop
+                <LoginForm setIsLoggedIn={setIsLoggedIn} />
             )}
         </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Importar Link para navegação
+import { Link } from 'react-router-dom';
 import './Header.css';
-import logo from '../../assets/logo.png'; // Caminho do logo
+import logo from '../../assets/logo.png';
 
 function Header() {
     return (
@@ -12,7 +12,6 @@ function Header() {
                 </Link>
             </div>
             <nav className="nav-links">
-                {/* Corrigir os links para corresponder às rotas configuradas */}
                 <Link to="/produtos/superiores">Superiores</Link>
                 <Link to="/produtos/inferiores">Inferiores</Link>
                 <Link to="/produtos/ongs">Produtos para ONGs</Link>

@@ -8,7 +8,7 @@ import ProductDetails from './pages/ProductDetails/ProductDetails';
 import Cart from './pages/Cart/Cart';
 import ProductAdmin from './pages/ProductAdmin/ProductAdmin';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Importa o estilo do Toastify
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
     const [cart, setCart] = useState([]);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Importa o Link do React Router
+import { Link } from 'react-router-dom';
 import './ProductCard.css';
 
 function ProductCard({ product }) {

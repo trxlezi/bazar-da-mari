@@ -10,16 +10,15 @@ function Cart({ cart, setCart }) {
                 .map(item =>
                     item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
                 )
-                .filter(item => item.quantity > 0) // Remove o item do carrinho se a quantidade for 0
+                .filter(item => item.quantity > 0)
         );
     };
 
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     const handleCheckout = () => {
-        // Exibe o toast de compra confirmada
         toast.success("Compra confirmada!", {
-            position: 'top-center',  // Usando string diretamente
+            position: 'top-center',
             autoClose: 3000,
         });
     };
@@ -48,7 +47,6 @@ function Cart({ cart, setCart }) {
                 Comprar Agora
             </button>
 
-            {/* Componente ToastContainer para renderizar o toast */}
             <ToastContainer />
         </div>
     );
