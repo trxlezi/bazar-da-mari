@@ -9,10 +9,11 @@ function ProductList() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/produtos?category=${category}`)
+        axios.get(`http://localhost:5000/api/${category}`)
             .then(response => setProducts(response.data))
             .catch(error => console.error("Erro ao buscar produtos:", error));
     }, [category]);
+    
 
     return (
         <div className="product-list-container">

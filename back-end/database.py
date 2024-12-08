@@ -5,15 +5,32 @@ def connect_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-def create_table():
+def create_tables():
     conn = connect_db()
     cursor = conn.cursor()
     cursor.execute("""
-        CREATE TABLE IF NOT EXISTS products (
+        CREATE TABLE IF NOT EXISTS superiores (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT NOT NULL,
             price REAL NOT NULL,
-            category TEXT NOT NULL,
+            description TEXT,
+            image TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS inferiores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL,
+            description TEXT,
+            image TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ongs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            price REAL NOT NULL,
             description TEXT,
             image TEXT
         )
@@ -21,5 +38,4 @@ def create_table():
     conn.commit()
     conn.close()
 
-# Cria a tabela ao iniciar
-create_table()
+create_tables()

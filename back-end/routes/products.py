@@ -11,31 +11,30 @@ def product_to_dict(product):
         'id': product[0],
         'name': product[1],
         'price': product[2],
-        'category': product[3],
-        'description': product[4],
-        'image': product[5]
+        'description': product[3],
+        'image': product[4]
     }
 
-@products_bp.route('/api/produtos', methods=['GET'])
-def get_products():
-    category = request.args.get('category')
+@products_bp.route('/api/<category>', methods=['GET'])
+def get_products(category):
+    if category not in ['superiores', 'inferiores', 'ongs']:
+        return jsonify({"error": "Categoria inválida"}), 400
+
     conn = connect_db()
     cursor = conn.cursor()
-
-    if category:
-        cursor.execute("SELECT * FROM products WHERE category = ?", (category,))
-    else:
-        cursor.execute("SELECT * FROM products")
-
+    cursor.execute(f"SELECT * FROM {category}")
     products = cursor.fetchall()
     conn.close()
     return jsonify([product_to_dict(p) for p in products])
 
-@products_bp.route('/api/produto/<int:product_id>', methods=['GET'])
-def get_product(product_id):
+@products_bp.route('/api/<category>/<int:product_id>', methods=['GET'])
+def get_product(category, product_id):
+    if category not in ['superiores', 'inferiores', 'ongs']:
+        return jsonify({"error": "Categoria inválida"}), 400
+
     conn = connect_db()
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM products WHERE id = ?", (product_id,))
+    cursor.execute(f"SELECT * FROM {category} WHERE id = ?", (product_id,))
     product = cursor.fetchone()
     conn.close()
 
@@ -44,9 +43,12 @@ def get_product(product_id):
     else:
         return jsonify({"error": "Produto não encontrado"}), 404
 
-@products_bp.route('/api/produto', methods=['POST'])
+@products_bp.route('/api/<category>', methods=['POST'])
 @token_required
-def create_product():
+def create_product(category):
+    if category not in ['superiores', 'inferiores', 'ongs']:
+        return jsonify({"error": "Categoria inválida"}), 400
+
     data = request.form
     image_file = request.files.get('image')
 
@@ -59,8 +61,8 @@ def create_product():
         conn = connect_db()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT INTO products (name, price, category, description, image) VALUES (?, ?, ?, ?, ?)",
-            (data['name'], data['price'], data['category'], data['description'], image_url)
+            f"INSERT INTO {category} (name, price, description, image) VALUES (?, ?, ?, ?)",
+            (data['name'], data['price'], data['description'], image_url)
         )
         conn.commit()
         new_product_id = cursor.lastrowid
@@ -69,3 +71,31 @@ def create_product():
         return jsonify({"id": new_product_id, "message": "Produto criado com sucesso"}), 201
     else:
         return jsonify({"error": "Arquivo de imagem inválido"}), 400
+
+@products_bp.route('/api/product/<int:product_id>', methods=['DELETE'])
+@token_required
+def delete_product(product_id):
+    # Listar as tabelas válidas
+    valid_categories = ['superiores', 'inferiores', 'ongs']
+
+    # Conectar ao banco de dados
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    # Verificar se o produto está presente em alguma das tabelas válidas
+    product_deleted = False
+    for category in valid_categories:
+        cursor.execute(f"SELECT id FROM {category} WHERE id = ?", (product_id,))
+        product = cursor.fetchone()
+        if product:
+            cursor.execute(f"DELETE FROM {category} WHERE id = ?", (product_id,))
+            conn.commit()
+            product_deleted = True
+            break
+
+    conn.close()
+
+    if product_deleted:
+        return jsonify({"message": "Produto excluído com sucesso!"}), 200
+    else:
+        return jsonify({"error": "Produto não encontrado em nenhuma categoria válida."}), 404

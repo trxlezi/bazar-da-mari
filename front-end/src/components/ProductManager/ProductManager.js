@@ -3,7 +3,9 @@ import axios from 'axios';
 import './ProductManager.css';
 
 function ProductManager() {
-    const [products, setProducts] = useState([]);
+    const [superiores, setSuperiores] = useState([]);
+    const [inferiores, setInferiores] = useState([]);
+    const [ongs, setOngs] = useState([]);
     const [form, setForm] = useState({ id: '', name: '', price: '', category: '', description: '', image: null });
     const [editMode, setEditMode] = useState(false);
     const [error, setError] = useState('');
@@ -13,24 +15,26 @@ function ProductManager() {
         if (!token) {
             setError('Não autenticado. Por favor, faça login.');
         } else {
-            loadProducts();
+            loadAllProducts();
         }
     }, []);
 
-    const loadProducts = async () => {
+    const loadAllProducts = async () => {
         try {
             const token = localStorage.getItem('token');
-            console.log('Token used for loading products:', token);
+            const headers = { 'Authorization': `Bearer ${token}` };
 
-            const response = await axios.get('http://localhost:5000/api/produtos', {
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
-            setProducts(response.data);
+            const [superioresRes, inferioresRes, ongsRes] = await Promise.all([
+                axios.get('http://localhost:5000/api/superiores', { headers }),
+                axios.get('http://localhost:5000/api/inferiores', { headers }),
+                axios.get('http://localhost:5000/api/ongs', { headers }),
+            ]);
+
+            setSuperiores(superioresRes.data);
+            setInferiores(inferioresRes.data);
+            setOngs(ongsRes.data);
         } catch (error) {
             console.error("Erro ao carregar produtos:", error.response ? error.response.data : error.message);
-            if (error.response && error.response.status === 401) {
-                setError('Sessão expirada. Por favor, faça login novamente.');
-            }
         }
     };
 
@@ -38,28 +42,22 @@ function ProductManager() {
         const formData = new FormData();
         formData.append('name', form.name);
         formData.append('price', form.price);
-        formData.append('category', form.category);
         formData.append('description', form.description);
+        formData.append('category', form.category);
         formData.append('image', form.image);
 
         try {
             const token = localStorage.getItem('token');
-            console.log('Token used for adding product:', token);
-
-            const response = await axios.post('http://localhost:5000/api/produto', formData, {
+            await axios.post(`http://localhost:5000/api/${form.category}`, formData, {
                 headers: { 
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`
                 },
             });
-            console.log('Product added successfully:', response.data);
             setForm({ id: '', name: '', price: '', category: '', description: '', image: null });
-            loadProducts();
+            loadAllProducts();
         } catch (error) {
             console.error("Erro ao adicionar produto:", error.response ? error.response.data : error.message);
-            if (error.response && error.response.status === 401) {
-                setError('Sessão expirada. Por favor, faça login novamente.');
-            }
         }
     };
 
@@ -67,7 +65,6 @@ function ProductManager() {
         const formData = new FormData();
         formData.append('name', form.name);
         formData.append('price', form.price);
-        formData.append('category', form.category);
         formData.append('description', form.description);
         formData.append('image', form.image);
 
@@ -80,28 +77,22 @@ function ProductManager() {
                 },
             });
             setForm({ id: '', name: '', price: '', category: '', description: '', image: null });
-            loadProducts();
+            loadAllProducts();
             setEditMode(false);
         } catch (error) {
             console.error("Erro ao editar produto:", error.response ? error.response.data : error.message);
-            if (error.response && error.response.status === 401) {
-                setError('Sessão expirada. Por favor, faça login novamente.');
-            }
         }
     };
 
-    const deleteProduct = async (id) => {
+    const deleteProduct = async (id, category) => {
         try {
             const token = localStorage.getItem('token');
             await axios.delete(`http://localhost:5000/api/produto/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            loadProducts();
+            loadAllProducts();
         } catch (error) {
             console.error("Erro ao excluir produto:", error.response ? error.response.data : error.message);
-            if (error.response && error.response.status === 401) {
-                setError('Sessão expirada. Por favor, faça login novamente.');
-            }
         }
     };
 
@@ -123,6 +114,30 @@ function ProductManager() {
         setForm({ id: '', name: '', price: '', category: '', description: '', image: null });
         setEditMode(false);
     };
+
+    const renderProducts = (products, category) => (
+        <div className={`category-${category}`}>
+            <h2>{category.charAt(0).toUpperCase() + category.slice(1)}</h2>
+            <ul className="product-list">
+                {products.map(product => (
+                    <li key={product.id} className="product-item">
+                        <img 
+                            src={`http://localhost:5000${product.image}`} 
+                            alt={product.name} 
+                            className="product-image" 
+                        />
+                        <div>
+                            <h3>{product.name}</h3>
+                            <p>R$ {product.price}</p>
+                            <p>{product.description}</p>
+                        </div>
+                        <button onClick={() => handleEdit(product)}>Editar</button>
+                        <button onClick={() => deleteProduct(product.id, category)}>Excluir</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
 
     if (error) {
         return <div className="error-message">{error}</div>;
@@ -170,29 +185,13 @@ function ProductManager() {
                 {editMode && <button type="button" onClick={handleCancelEdit}>Cancelar</button>}
             </form>
 
-            <h2>Lista de Produtos</h2>
-            <ul className="product-list">
-                {products.map(product => (
-                    <li key={product.id} className="product-item">
-                        <img 
-                            src={`http://localhost:5000${product.image}`} 
-                            alt={product.name} 
-                            className="product-image" 
-                        />
-                        <div>
-                            <h3>{product.name}</h3>
-                            <p>{product.category}</p>
-                        </div>
-                        <div>
-                            <button onClick={() => handleEdit(product)}>Editar</button>
-                            <button onClick={() => deleteProduct(product.id)}>Excluir</button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+            <div className="categories">
+                {renderProducts(superiores, 'superiores')}
+                {renderProducts(inferiores, 'inferiores')}
+                {renderProducts(ongs, 'ongs')}
+            </div>
         </div>
     );
 }
 
 export default ProductManager;
-
