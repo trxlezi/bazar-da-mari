@@ -7,7 +7,6 @@ app = Flask(__name__)
 CORS(app)
 app.config.from_object(Config)
 
-# Inicializa as rotas
 init_routes(app)
 
 if __name__ == '__main__':

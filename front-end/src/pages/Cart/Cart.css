@@ -82,4 +82,17 @@
     }
   }
   
-  
+  .clear-cart-button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #724a24;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.clear-cart-button:hover {
+    background-color: #c9302c;
+}

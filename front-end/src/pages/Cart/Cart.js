@@ -1,9 +1,15 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './Cart.css';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Cart({ cart, setCart }) {
+    // Atualizar o localStorage sempre que o carrinho for alterado
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
+
+    // Função para remover itens do carrinho
     const removeFromCart = (productId) => {
         setCart(prevCart =>
             prevCart
@@ -14,8 +20,19 @@ function Cart({ cart, setCart }) {
         );
     };
 
+    // Função para esvaziar o carrinho
+    const clearCart = () => {
+        setCart([]);
+        toast.info("Carrinho esvaziado!", {
+            position: 'top-center',
+            autoClose: 3000,
+        });
+    };
+
+    // Total do carrinho
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+    // Função para finalizar a compra
     const handleCheckout = () => {
         toast.success("Compra confirmada!", {
             position: 'top-center',
@@ -45,6 +62,9 @@ function Cart({ cart, setCart }) {
 
             <button className="checkout-button" onClick={handleCheckout}>
                 Comprar Agora
+            </button>
+            <button className="clear-cart-button" onClick={clearCart}>
+                Esvaziar Carrinho
             </button>
 
             <ToastContainer />

@@ -87,7 +87,7 @@ function ProductManager() {
     const deleteProduct = async (id, category) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.delete(`http://localhost:5000/api/produto/${id}`, {
+            await axios.delete(`http://localhost:5000/api/product/${id}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             loadAllProducts();
